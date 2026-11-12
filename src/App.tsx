@@ -16,6 +16,7 @@ import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
 import Perfil from "./pages/Perfil";
 import Psicologo from "./pages/Psicologo";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
       <Route path="/hug-plus" element={<HugPlus />} />
       <Route path="/login" element={<Login />} />
       <Route path="/cadastro" element={<Cadastro />} />
+      <Route path="/admin" element={<Admin />} />
       <Route path="/conteudos" element={<RotaProtegida><Conteudos /></RotaProtegida>} />
       <Route path="/diario" element={<RotaProtegida><Diario /></RotaProtegida>} />
       <Route path="/perfil" element={<RotaProtegida><Perfil /></RotaProtegida>} />

@@ -41,6 +41,11 @@ export function excluirUsuario(id: number): Promise<void> {
   return requisitar<void>(`/usuario/${id}`, { method: "DELETE" });
 }
 
+// Lista completa (todos os usuários). Usada só na tela de administração, para mostrar nomes.
+export function listarUsuarios(): Promise<Usuario[]> {
+  return requisitar<Usuario[]>("/usuario");
+}
+
 // ---------- Psicólogo ----------
 
 // 404 significa que o usuário é paciente (não tem perfil de psicólogo).
@@ -70,6 +75,24 @@ export function atualizarPsicologo(perfil: PerfilPsicologo): Promise<unknown> {
   });
 }
 
+// Lista completa de psicólogos (tela de administração).
+export function listarPsicologos(): Promise<PerfilPsicologo[]> {
+  return requisitar<PerfilPsicologo[]>("/psicologo");
+}
+
+// Aprovação pela equipe: manda o objeto inteiro que veio da lista, só com o status trocado.
+export function aprovarPsicologo(psicologo: PerfilPsicologo): Promise<unknown> {
+  return requisitar<unknown>(`/psicologo/${psicologo.id}`, {
+    method: "PUT",
+    body: JSON.stringify({ ...psicologo, dsStatus: "APROVADO" }),
+  });
+}
+
+// Precisa ser chamado antes de excluir o usuário: o banco não deixa apagar a conta com perfil ligado.
+export function excluirPsicologo(id: number): Promise<void> {
+  return requisitar<void>(`/psicologo/${id}`, { method: "DELETE" });
+}
+
 // ---------- Conteúdos ----------
 
 // Para o usuário logado: a API já esconde os conteúdos exclusivos de quem não tem Hug+.
@@ -88,6 +111,15 @@ export function buscarConteudo(id: number): Promise<Conteudo> {
 
 export function criarConteudo(dados: NovoConteudo): Promise<Conteudo> {
   return requisitar<Conteudo>("/conteudo", { method: "POST", body: JSON.stringify(dados) });
+}
+
+// PUT substitui o registro inteiro: manda todos os campos (inclusive a data de publicação original).
+export function atualizarConteudo(id: number, dados: NovoConteudo): Promise<unknown> {
+  return requisitar<unknown>(`/conteudo/${id}`, { method: "PUT", body: JSON.stringify(dados) });
+}
+
+export function excluirConteudo(id: number): Promise<void> {
+  return requisitar<void>(`/conteudo/${id}`, { method: "DELETE" });
 }
 
 // ---------- Clínicas ----------

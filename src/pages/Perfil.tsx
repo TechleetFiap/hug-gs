@@ -7,7 +7,15 @@ import Feedback from "../components/ui/Feedback";
 import { useAuth } from "../hooks/useAuth";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { ApiError, mensagemDeErro } from "../services/apiClient";
-import { atualizarUsuario, buscarUsuario, excluirUsuario } from "../services/hugService";
+import { atualizarUsuario, buscarUsuario, excluirPsicologo, excluirUsuario } from "../services/hugService";
+
+// Mensagens da exclusão de conta (ajuste os textos aqui).
+const MENSAGENS_EXCLUSAO = {
+  confirmar: "Excluir sua conta? Esta ação não pode ser desfeita.",
+  perfilPsicologoVinculado:
+    "Não foi possível excluir seu perfil de psicólogo porque ele ainda possui vínculos (ex.: publicações ou clínicas).",
+  contaVinculada: "Não foi possível excluir a conta porque ela possui registros vinculados (ex.: diário).",
+};
 
 interface Dados {
   nome: string;
@@ -18,7 +26,7 @@ interface Dados {
 export default function Perfil() {
   usePageTitle("Meu perfil");
   const navigate = useNavigate();
-  const { usuario, sair, atualizarUsuario: salvarNoContexto } = useAuth();
+  const { usuario, psicologo, sair, atualizarUsuario: salvarNoContexto, recarregarPsicologo } = useAuth();
   const [feedback, setFeedback] = useState<{ tipo: "sucesso" | "erro"; texto: string } | null>(null);
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<Dados>({
     defaultValues: { nome: usuario?.nmUsuario ?? "", email: usuario?.dsEmail ?? "", novaSenha: "" },
@@ -46,8 +54,24 @@ export default function Perfil() {
   }
 
   async function excluir() {
-    if (!window.confirm("Excluir sua conta? Esta ação não pode ser desfeita.")) return;
+    if (!window.confirm(MENSAGENS_EXCLUSAO.confirmar)) return;
     setFeedback(null);
+
+    // O banco não deixa apagar a conta enquanto existe perfil de psicólogo ligado a ela:
+    // primeiro DELETE /hug/psicologo/{id}, depois DELETE /hug/usuario/{id}.
+    if (psicologo) {
+      try {
+        await excluirPsicologo(psicologo.id);
+      } catch (err) {
+        const texto =
+          err instanceof ApiError && err.status === 404
+            ? MENSAGENS_EXCLUSAO.perfilPsicologoVinculado
+            : mensagemDeErro(err);
+        setFeedback({ tipo: "erro", texto });
+        return;
+      }
+    }
+
     try {
       await excluirUsuario(usuarioAtual.id);
       sair();
@@ -56,9 +80,11 @@ export default function Perfil() {
       // A API responde 404 quando o usuário tem registros vinculados (ex.: diário).
       const texto =
         err instanceof ApiError && err.status === 404
-          ? "Não foi possível excluir a conta porque ela possui registros vinculados."
+          ? MENSAGENS_EXCLUSAO.contaVinculada
           : mensagemDeErro(err);
       setFeedback({ tipo: "erro", texto });
+      // O perfil de psicólogo já foi removido: sincroniza a sessão para não ficar desatualizada.
+      if (psicologo) await recarregarPsicologo().catch(() => undefined);
     }
   }
 

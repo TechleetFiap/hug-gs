@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { criarConteudo } from "../../services/hugService";
+import { atualizarConteudo, criarConteudo } from "../../services/hugService";
 import { mensagemDeErro } from "../../services/apiClient";
-import type { SimNao, TipoConteudo } from "../../types/hug";
+import type { Conteudo, SimNao, TipoConteudo } from "../../types/hug";
 import { dataLocalISO } from "../../utils/datas";
 import Button from "../ui/Button";
 import Feedback from "../ui/Feedback";
@@ -16,15 +16,30 @@ interface Dados {
   exclusivo: boolean;
 }
 
+// Sem "conteudo": publica um novo. Com "conteudo": edita o existente (PUT).
 export default function PublicarConteudo({
   cdPsicologo,
   onPublicado,
+  conteudo,
+  onCancelar,
 }: {
   cdPsicologo: number;
   onPublicado: () => void;
+  conteudo?: Conteudo;
+  onCancelar?: () => void;
 }) {
+  const editando = Boolean(conteudo);
   const { register, handleSubmit, watch, reset, formState: { errors, isSubmitting } } = useForm<Dados>({
-    defaultValues: { dsTipo: "TEXTO", exclusivo: false },
+    defaultValues: conteudo
+      ? {
+          nmTitulo: conteudo.nmTitulo,
+          dsTema: conteudo.dsTema,
+          dsTipo: conteudo.dsTipo,
+          dsTexto: conteudo.dsTexto ?? "",
+          dsUrlVideo: conteudo.dsUrlVideo ?? "",
+          exclusivo: conteudo.flExclusivo === "S",
+        }
+      : { dsTipo: "TEXTO", exclusivo: false },
   });
   const tipo = watch("dsTipo");
   const [feedback, setFeedback] = useState<{ tipo: "sucesso" | "erro"; texto: string } | null>(null);
@@ -32,7 +47,7 @@ export default function PublicarConteudo({
   async function enviar(dados: Dados) {
     setFeedback(null);
     try {
-      await criarConteudo({
+      const corpo = {
         cdPsicologo,
         nmTitulo: dados.nmTitulo.trim(),
         dsTema: dados.dsTema.trim(),
@@ -41,8 +56,15 @@ export default function PublicarConteudo({
         dsTexto: dados.dsTipo === "TEXTO" ? dados.dsTexto.trim() : null,
         dsUrlVideo: dados.dsTipo === "VIDEO" ? dados.dsUrlVideo.trim() : null,
         flExclusivo: (dados.exclusivo ? "S" : "N") as SimNao,
-        dtPublicacao: dataLocalISO(),
-      });
+      };
+      if (conteudo) {
+        // Na edição mantém a data de publicação original (campo obrigatório no PUT).
+        await atualizarConteudo(conteudo.id, { ...corpo, dtPublicacao: conteudo.dtPublicacao });
+        onPublicado();
+        onCancelar?.();
+        return;
+      }
+      await criarConteudo({ ...corpo, dtPublicacao: dataLocalISO() });
       reset({ dsTipo: "TEXTO", exclusivo: false });
       setFeedback({ tipo: "sucesso", texto: "Conteúdo publicado." });
       onPublicado();
@@ -114,9 +136,18 @@ export default function PublicarConteudo({
         Conteúdo exclusivo do Hug+
       </label>
 
-      <Button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "Publicando..." : "Publicar conteúdo"}
-      </Button>
+      <div className="flex gap-3">
+        <Button type="submit" disabled={isSubmitting}>
+          {editando
+            ? isSubmitting ? "Salvando..." : "Salvar alterações"
+            : isSubmitting ? "Publicando..." : "Publicar conteúdo"}
+        </Button>
+        {editando && onCancelar && (
+          <Button type="button" variante="secundaria" onClick={onCancelar} disabled={isSubmitting}>
+            Cancelar
+          </Button>
+        )}
+      </div>
       {feedback && <Feedback tipo={feedback.tipo} texto={feedback.texto} />}
     </form>
   );
