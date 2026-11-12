@@ -12,7 +12,8 @@ import type { PerfilPsicologo } from "../types/hug";
 
 // Busca psicólogos e usuários juntos: o nome do psicólogo está no cadastro do usuário.
 async function carregar() {
-  const [psicologos, usuarios] = await Promise.all([listarPsicologos(), listarUsuarios()]);
+  const psicologos = await listarPsicologos();
+  const usuarios = await listarUsuarios();
   const nomes = new Map(usuarios.map((u) => [u.id, u.nmUsuario]));
   return psicologos
     .filter((p) => p.dsStatus === "PENDENTE")

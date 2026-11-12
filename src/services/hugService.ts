@@ -155,12 +155,16 @@ export function criarAssinatura(
   });
 }
 
+// Cancela a assinatura: o acesso aos conteúdos exclusivos some na hora.
+export function excluirAssinatura(id: number): Promise<void> {
+  return requisitar<void>(`/assinatura/${id}`, { method: "DELETE" });
+}
+
 // Dados que a tela de conteúdo precisa para decidir se o Hug+ está ativo.
 export async function carregarAcessoHugPlus(cdUsuario: number) {
-  const [assinaturas, planos] = await Promise.all([
-    listarAssinaturasUsuario(cdUsuario),
-    listarPlanos(),
-  ]);
+  // Uma chamada depois da outra (a API não deve receber requisições simultâneas).
+  const assinaturas = await listarAssinaturasUsuario(cdUsuario);
+  const planos = await listarPlanos();
   return { assinaturas, planos, temHugPlus: temHugPlusAgora(assinaturas, planos) };
 }
 
