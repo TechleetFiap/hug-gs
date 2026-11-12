@@ -2,14 +2,13 @@ import { useNavigate } from "react-router-dom";
 import ConteudoCard from "../components/conteudos/ConteudoCard";
 import Layout from "../components/layout/Layout";
 import Button from "../components/ui/Button";
-import Card from "../components/ui/Card";
 import { EstadoCarregando, EstadoErro, EstadoVazio } from "../components/ui/Estados";
 import { useApi } from "../hooks/useApi";
 import { useAuth } from "../hooks/useAuth";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { listarAssinaturasUsuario, listarConteudosUsuario, listarPlanos } from "../services/hugService";
 import type { Conteudo } from "../types/hug";
-import { formatarData, formatarReal, temHugPlusAgora } from "../utils/datas";
+import { formatarData, temHugPlusAgora } from "../utils/datas";
 
 export default function HugPlus() {
   usePageTitle("Hug+");
@@ -27,7 +26,7 @@ export default function HugPlus() {
       const conteudos = await listarConteudosUsuario(cdUsuario);
       exclusivos = conteudos.filter((c) => c.flExclusivo === "S");
     }
-    return { planos, assinaturas, temHugPlus, exclusivos };
+    return { assinaturas, temHugPlus, exclusivos };
   }, [cdUsuario]);
 
   return (
@@ -42,7 +41,7 @@ export default function HugPlus() {
         {estado.status === "error" && <EstadoErro mensagem={estado.message} onTentar={recarregar} />}
 
         {estado.status === "success" && (() => {
-          const { planos, assinaturas, temHugPlus, exclusivos } = estado.data;
+          const { assinaturas, temHugPlus, exclusivos } = estado.data;
           const ultima = assinaturas.length > 0 ? assinaturas[assinaturas.length - 1] : null;
 
           return (
