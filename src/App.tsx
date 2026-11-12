@@ -17,6 +17,7 @@ import Cadastro from "./pages/Cadastro";
 import Perfil from "./pages/Perfil";
 import Psicologo from "./pages/Psicologo";
 import Admin from "./pages/Admin";
+import MeuPlano from "./pages/MeuPlano";
 import NotFound from "./pages/NotFound";
 
 export default function App() {
@@ -36,6 +37,7 @@ export default function App() {
       <Route path="/conteudos" element={<RotaProtegida><Conteudos /></RotaProtegida>} />
       <Route path="/diario" element={<RotaProtegida><Diario /></RotaProtegida>} />
       <Route path="/perfil" element={<RotaProtegida><Perfil /></RotaProtegida>} />
+      <Route path="/meu-plano" element={<RotaProtegida><MeuPlano /></RotaProtegida>} />
       <Route path="/psicologo" element={<RotaProtegida><Psicologo /></RotaProtegida>} />
 
       {/* Rotas dinâmicas [useParams] */}

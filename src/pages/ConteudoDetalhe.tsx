@@ -15,10 +15,8 @@ export default function ConteudoDetalhe() {
 
   const { estado, recarregar } = useApi(
     async () => {
-      const [conteudo, acesso] = await Promise.all([
-        buscarConteudo(numeroId),
-        carregarAcessoHugPlus(cdUsuario),
-      ]);
+      const conteudo = await buscarConteudo(numeroId);
+      const acesso = await carregarAcessoHugPlus(cdUsuario);
       return { conteudo, temHugPlus: acesso.temHugPlus };
     },
     [numeroId, cdUsuario]

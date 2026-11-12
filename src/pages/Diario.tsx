@@ -17,10 +17,8 @@ export default function Diario() {
 
   const { estado, recarregar } = useApi(
     async () => {
-      const [registros, ofensiva] = await Promise.all([
-        listarRegistrosUsuario(cdUsuario),
-        buscarOfensiva(cdUsuario),
-      ]);
+      const registros = await listarRegistrosUsuario(cdUsuario);
+      const ofensiva = await buscarOfensiva(cdUsuario);
       return { registros, ofensiva };
     },
     [cdUsuario]

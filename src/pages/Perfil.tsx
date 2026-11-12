@@ -115,6 +115,12 @@ export default function Perfil() {
         </form>
 
         <div className="mt-12 border-t border-primary pt-8">
+          <h3 className="mb-3 text-lg">Meu plano</h3>
+          <p className="mb-4 text-sm text-text-footer">Veja seu plano Hug+ e adquira ou renove quando quiser.</p>
+          <Button variante="secundaria" onClick={() => navigate("/meu-plano")}>Meu plano</Button>
+        </div>
+
+        <div className="mt-12 border-t border-primary pt-8">
           <h3 className="mb-3 text-lg">Excluir conta</h3>
           <p className="mb-4 text-sm text-text-footer">Remove seu cadastro. Esta ação não pode ser desfeita.</p>
           <Button variante="perigo" onClick={excluir}>Excluir minha conta</Button>
