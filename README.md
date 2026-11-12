@@ -47,12 +47,11 @@ Build de produção: `npm run build`.
 
 ## GitHub
 
-- Repositório: _a preencher_
+- Repositório: https://github.com/TechleetFiap/hug-gs
 
 ## Vercel
 
-- URL do front: _a preencher_
-- O `vercel.json` já encaminha `/hug/*` para a API em `https://hug-gs.onrender.com`.
+- URL do front: https://hug-gs.vercel.app
 
 ## API
 
