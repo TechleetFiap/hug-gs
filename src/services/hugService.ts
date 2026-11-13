@@ -5,12 +5,14 @@ import type {
   AtualizacaoUsuario,
   Clinica,
   Conteudo,
+  NovaClinica,
   NovoConteudo,
   NovoPsicologo,
   NovoRegistroHumor,
   NovoUsuario,
   PerfilPsicologo,
   Plano,
+  PsicologoClinica,
   RegistroHumor,
   Usuario,
 } from "../types/hug";
@@ -130,6 +132,28 @@ export function listarClinicas(): Promise<Clinica[]> {
 
 export function buscarClinica(id: number): Promise<Clinica> {
   return requisitar<Clinica>(`/clinica/${id}`);
+}
+
+// A API devolve "id": null no POST de clínica; para saber o id, busque a lista de novo.
+export function criarClinica(dados: NovaClinica): Promise<unknown> {
+  return requisitar<unknown>("/clinica", { method: "POST", body: JSON.stringify(dados) });
+}
+
+// ---------- Psicólogo x Clínica (N:N) ----------
+
+export function listarVinculos(): Promise<PsicologoClinica[]> {
+  return requisitar<PsicologoClinica[]>("/psicologoClinica");
+}
+
+export function vincularClinica(cdPsicologo: number, cdClinica: number): Promise<unknown> {
+  return requisitar<unknown>("/psicologoClinica", {
+    method: "POST",
+    body: JSON.stringify({ cdPsicologo, cdClinica }),
+  });
+}
+
+export function desvincularClinica(cdPsicologo: number, cdClinica: number): Promise<void> {
+  return requisitar<void>(`/psicologoClinica/${cdPsicologo}/${cdClinica}`, { method: "DELETE" });
 }
 
 // ---------- Hug+ ----------

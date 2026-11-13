@@ -75,6 +75,14 @@ export interface Clinica {
   dsSite: string | null;
 }
 
+export type NovaClinica = Omit<Clinica, "id">;
+
+// Vínculo N:N entre psicólogo e clínica.
+export interface PsicologoClinica {
+  cdPsicologo: number;
+  cdClinica: number;
+}
+
 export interface Plano {
   id: number;
   nmPlano: string;

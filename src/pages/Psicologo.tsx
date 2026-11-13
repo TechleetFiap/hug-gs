@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/layout/Layout";
 import CadastroPsicologo from "../components/psicologo/CadastroPsicologo";
+import MinhasClinicas from "../components/psicologo/MinhasClinicas";
 import PublicarConteudo from "../components/psicologo/PublicarConteudo";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
@@ -73,6 +74,11 @@ export default function Psicologo() {
 
         {psicologo?.dsStatus === "APROVADO" && (
           <div className="flex flex-col gap-12">
+            <div>
+              <h3 className="mb-6 text-xl">Minhas clínicas</h3>
+              <MinhasClinicas cdPsicologo={psicologo.id} />
+            </div>
+
             <div>
               <h3 className="mb-6 text-xl">Publicar conteúdo</h3>
               <PublicarConteudo cdPsicologo={psicologo.id} onPublicado={carregarMinhas} />
