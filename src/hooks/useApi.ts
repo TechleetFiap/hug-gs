@@ -10,9 +10,7 @@ export function useApi<T>(buscar: () => Promise<T>, dependencias: unknown[]) {
   const [estado, setEstado] = useState<ApiState<T>>({ status: "loading" });
   const [versao, setVersao] = useState<number>(0);
 
-  useEffect(() => {
-    let cancelado = false;
-    setEstado({ status: "loading" });
+  
 
     buscar()
       .then((data) => {
