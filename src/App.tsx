@@ -45,7 +45,7 @@ export default function App() {
       <Route path="/conteudos/:id" element={<RotaProtegida><ConteudoDetalhe /></RotaProtegida>} />
       <Route path="/clinicas/:id" element={<ClinicaDetalhe />} />
 
-      {/* Fallback */}
+      {/* Fallbac */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
