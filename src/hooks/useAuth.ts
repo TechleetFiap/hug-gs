@@ -7,4 +7,6 @@ export function useAuth(): AuthContextValue {
     throw new Error("useAuth precisa estar dentro de <AuthProvider>.");
   }
   return contexto;
+
+
 }
