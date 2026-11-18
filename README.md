@@ -67,7 +67,7 @@ Build de produção: `npm run build`.
 
 ## YouTube
 
-- Vídeo de apresentação (até 3 min): _a preencher_
+- Vídeo de apresentação: https://youtu.be/gtG3zy12V2U
 
 ## Contato
 
