@@ -144,7 +144,7 @@ export function atualizarClinica(id: number, dados: NovaClinica): Promise<unknow
   return requisitar<unknown>(`/clinica/${id}`, { method: "PUT", body: JSON.stringify(dados) });
 }
 
-// O banco não deixa excluir a clínica enquanto houver psicólogo vinculado (a API responde 404).
+// O banco não deixa excluir a clínica enquanto houver psicólogo vinculado (a API responde 409).
 export function excluirClinica(id: number): Promise<void> {
   return requisitar<void>(`/clinica/${id}`, { method: "DELETE" });
 }

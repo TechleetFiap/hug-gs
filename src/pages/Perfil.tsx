@@ -64,7 +64,7 @@ export default function Perfil() {
         await excluirPsicologo(psicologo.id);
       } catch (err) {
         const texto =
-          err instanceof ApiError && err.status === 404
+          err instanceof ApiError && err.status === 409
             ? MENSAGENS_EXCLUSAO.perfilPsicologoVinculado
             : mensagemDeErro(err);
         setFeedback({ tipo: "erro", texto });
@@ -77,9 +77,9 @@ export default function Perfil() {
       sair();
       navigate("/", { replace: true });
     } catch (err) {
-      // A API responde 404 quando o usuário tem registros vinculados (ex.: diário).
+      // A API responde 409 quando o usuário tem registros vinculados (ex.: diário).
       const texto =
-        err instanceof ApiError && err.status === 404
+        err instanceof ApiError && err.status === 409
           ? MENSAGENS_EXCLUSAO.contaVinculada
           : mensagemDeErro(err);
       setFeedback({ tipo: "erro", texto });

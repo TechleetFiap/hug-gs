@@ -17,11 +17,24 @@ export class ApiError extends Error {
   }
 }
 
-// O guia devolve erros de regra em texto puro, prontos para o usuário.
-// Erros de validação do Spring (JSON padrão, sem texto de regra) caem na mensagem padrão.
+// A API devolve todo erro no mesmo JSON: { status, erro, mensagem, caminho, campos, timestamp }.
+// Em erro de validação (400), "campos" traz a mensagem de cada campo inválido.
+interface CorpoErro {
+  mensagem?: string;
+  campos?: { campo: string; mensagem: string }[];
+}
+
 function extrairMensagem(corpo: string): string {
-  if (!corpo || corpo.trim().startsWith("{")) return "";
-  return corpo;
+  if (!corpo) return "";
+  try {
+    const erro = JSON.parse(corpo) as CorpoErro;
+    const mensagensCampos = (erro.campos ?? []).map((c) => c.mensagem).filter(Boolean);
+    if (mensagensCampos.length > 0) return mensagensCampos.join(" ");
+    return erro.mensagem ?? "";
+  } catch {
+    // Resposta que não é JSON (ex.: página de erro do servidor): usa a mensagem padrão.
+    return "";
+  }
 }
 
 function mensagemPadrao(status: number): string {
