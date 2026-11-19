@@ -32,7 +32,7 @@ src/
 
 | Foto                                                | Nome                          | RM     | Turma | GitHub                                           | LinkedIn                                                               |
 | --------------------------------------------------- | ----------------------------- | ------ | ----- | ------------------------------------------------ | ---------------------------------------------------------------------- |
-| <img src="public/imagens/samuel.jpeg" width="60" /> | Samuel Pedroso                | 569335 | 1TDSR | [GitHub](https://github.com/OSamuelXavierDev)    | [LinkedIn](https://www.linkedin.com/in/samuel-xavier-061434274)        |
+| <img src="public/imagens/samuel.jpeg" width="60" /> | Samuel Pedroso Xavier                | 569335 | 1TDSR | [GitHub](https://github.com/OSamuelXavierDev)    | [LinkedIn](https://www.linkedin.com/in/samuel-xavier-061434274)        |
 | <img src="public/imagens/diogo.jpeg" width="60" />  | Diogo Pedroso Alves           | 570024 | 1TDSR | [GitHub](https://github.com/DiogoPedrosoAlves)   | [LinkedIn](https://www.linkedin.com/in/diogo-pedroso-alves-895346237/) |
 | <img src="public/imagens/murilo.jpeg" width="60" /> | Murilo Munari Bissiato        | 569602 | 1TDSR | [GitHub](https://github.com/murilomunari)        | [LinkedIn](https://www.linkedin.com/in/murilomunaribissiato/)          |
 | <img src="public/imagens/pedro.jpeg" width="60" />  | Pedro Henrique Toledo Sampaio | 571707 | 1TDSR | [GitHub](https://github.com/PedroSampaio20)      | [LinkedIn](https://www.linkedin.com/in/pedro-sampaio2002/)             |
