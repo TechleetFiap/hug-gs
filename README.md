@@ -71,7 +71,4 @@ Build de produção: `npm run build`.
 
 ## Contato
 
-- E-mail: RM570024@fiap.com.br.
-
-commit
-commit
+- E-mail: RM570024@fiap.com.br
