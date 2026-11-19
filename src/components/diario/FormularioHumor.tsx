@@ -63,7 +63,7 @@ export default function FormularioHumor({ cdUsuario, registroHoje, onSalvo }: Fo
   return (
     <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
       <fieldset className="flex flex-col gap-3">
-        <legend className="mb-2 font-sans text-sm">Como você está hoje?</legend>
+        <legend className="mb-2 font-sans text-sm">Escolha um emoji</legend>
         <div className="flex flex-wrap justify-between gap-2">
           {OPCOES.map((opcao) => (
             <button

@@ -53,7 +53,7 @@ export default function Header() {
             <Link
               key={link.to}
               to={link.to}
-              className="whitespace-nowrap font-sans text-sm transition-colors hover:text-white"
+              className={`whitespace-nowrap font-sans text-sm transition-colors hover:text-white ${location.pathname === link.to ? "text-acento" : ""}`}
             >
               {link.label}
             </Link>
@@ -101,7 +101,7 @@ export default function Header() {
           <Link
             key={link.to}
             to={link.to}
-            className="block border-b border-white/10 px-6 py-4 font-sans text-sm"
+            className={`block border-b border-white/10 px-6 py-4 font-sans text-sm ${location.pathname === link.to ? "text-acento" : ""}`}
           >
             {link.label}
           </Link>

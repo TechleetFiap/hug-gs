@@ -12,7 +12,7 @@ export default function Faq() {
         <div className="flex flex-col gap-3">
           {perguntasFrequentes.map((item) => (
             <details key={item.id} className="group rounded-xl border border-primary p-4 open:bg-white/5">
-              <summary className="cursor-pointer list-none font-medium">{item.pergunta}</summary>
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium">{item.pergunta}<span aria-hidden="true" className="text-xl text-acento transition-transform group-open:rotate-45">+</span></summary>
               <p className="mt-3 text-sm leading-relaxed text-text-footer">{item.resposta}</p>
             </details>
           ))}

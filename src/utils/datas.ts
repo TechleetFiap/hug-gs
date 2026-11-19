@@ -14,7 +14,8 @@ export function somarDias(iso: string, dias: number): string {
   return dataLocalISO(new Date(ano, mes - 1, dia + dias));
 }
 
-export function formatarData(iso: string): string {
+export function formatarData(iso: string | null | undefined): string {
+  if (!iso) return "";
   const [ano, mes, dia] = iso.split("-");
   return `${dia}/${mes}/${ano}`;
 }

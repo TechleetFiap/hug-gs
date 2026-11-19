@@ -62,6 +62,9 @@ export default function Diario() {
 
               <div>
                 <h3 className="mb-4 text-xl">Últimos 14 dias</h3>
+                {registros.length === 0 && (
+                  <p className="mb-4 text-sm text-text-footer">Seus registros aparecem aqui. Faça o primeiro hoje.</p>
+                )}
                 <GraficoHumor registros={registros} />
               </div>
 
